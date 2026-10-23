@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Flashcard Coach – Learn Azure with analogies</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #eef4fc;
+        --surface: #ffffff;
+        --ink: #0a1f44;
+        --muted: #52638a;
+        --line: #d3dff2;
+        --gold: #0078d4;
+        --navy: #0b2a5b;
+        --onnavy: #eef4fc;
+        --ok: #1f8a5b;
+        --bad: #c2412d;
+        --tint: #dce8f8;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #08111f;
+          --surface: #0e1b30;
+          --ink: #e6eefb;
+          --muted: #94a7c8;
+          --line: #1f3355;
+          --gold: #4aa3ff;
+          --navy: #050b16;
+          --onnavy: #e6eefb;
+          --tint: #12264a;
+          --ok: #5fc08a;
+          --bad: #e8806c;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #08111f;
+        --surface: #0e1b30;
+        --ink: #e6eefb;
+        --muted: #94a7c8;
+        --line: #1f3355;
+        --gold: #4aa3ff;
+        --navy: #050b16;
+        --onnavy: #e6eefb;
+        --tint: #12264a;
+        --ok: #5fc08a;
+        --bad: #e8806c;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          16px/1.6 Inter,
+          system-ui,
+          sans-serif;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: Fraunces, Georgia, serif;
+        line-height: 1.15;
+        margin: 0;
+      }
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 0;
+      }
+      .logo {
+        font-family: Fraunces, Georgia, serif;
+        font-weight: 700;
+        font-size: 21px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .logo i {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        background: var(--gold);
+        display: inline-block;
+      }
+      .btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 22px;
+        font:
+          600 15px Inter,
+          sans-serif;
+        cursor: pointer;
+        background: var(--navy);
+        color: var(--onnavy);
+      }
+      .btn.gold {
+        background: var(--gold);
+        color: #fff;
+      }
+      @media (prefers-color-scheme: dark) {
+        .btn.gold {
+          color: #08141c;
+        }
+      }
+      .btn.ghost {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid var(--line);
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 40px;
+        align-items: center;
+        padding: 48px 0 56px;
+      }
+      .eyebrow {
+        color: var(--gold);
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      .hero h1 {
+        font-size: clamp(36px, 5.4vw, 60px);
+        margin: 14px 0 18px;
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 18px;
+        max-width: 480px;
+      }
+      .hero .row {
+        display: flex;
+        gap: 12px;
+        margin-top: 26px;
+        flex-wrap: wrap;
+      }
+      .demo {
+        background: var(--navy);
+        color: var(--onnavy);
+        border-radius: 24px;
+        padding: 28px;
+        min-height: 280px;
+        position: relative;
+      }
+      .demo small {
+        color: var(--gold);
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .demo h3 {
+        font-size: 28px;
+        margin: 10px 0;
+      }
+      .demo p {
+        color: inherit;
+        opacity: 0.85;
+        font-size: 15px;
+        margin: 8px 0;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        text-align: center;
+        padding: 22px;
+      }
+      .stats b {
+        font:
+          700 30px Fraunces,
+          Georgia,
+          serif;
+        display: block;
+      }
+      .stats span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      section {
+        padding: 56px 0;
+      }
+      section h2 {
+        font-size: clamp(28px, 4vw, 40px);
+        margin-bottom: 12px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 16px;
+        margin-top: 24px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px;
+      }
+      .card .n {
+        color: var(--gold);
+        font:
+          700 14px Fraunces,
+          Georgia,
+          serif;
+      }
+      .card h3 {
+        font-size: 20px;
+        margin: 6px 0;
+      }
+      .card p {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0;
+      }
+      .cta {
+        background: var(--navy);
+        color: var(--onnavy);
+        border-radius: 28px;
+        padding: 48px 28px;
+        text-align: center;
+      }
+      .cta p {
+        opacity: 0.8;
+        max-width: 480px;
+        margin: 12px auto 22px;
+      }
+      footer {
+        padding: 28px 0;
+        color: var(--muted);
+        font-size: 14px;
+        text-align: center;
+      }
+      .bar {
+        height: 8px;
+        background: var(--tint);
+        border-radius: 9px;
+        overflow: hidden;
+        margin: 12px 0 6px;
+      }
+      .bar div {
+        height: 100%;
+        background: var(--gold);
+        width: 0;
+        transition: width 0.4s;
+      }
+      .tag {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .acts {
+        display: flex;
+        gap: 8px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .flip {
+        perspective: 1000px;
+        margin: 20px 0;
+        cursor: pointer;
+      }
+      .face {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 28px;
+        min-height: 300px;
+      }
+      .face .lab {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 99px;
+        background: var(--tint);
+        color: var(--gold);
+        margin-bottom: 14px;
+      }
+      .face.an {
+        background: var(--navy);
+        color: var(--onnavy);
+        border-color: var(--navy);
+      }
+      .face h2 {
+        font-size: 30px;
+        margin-bottom: 12px;
+      }
+      .opt {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin: 10px 0;
+        font:
+          15px Inter,
+          sans-serif;
+        cursor: pointer;
+      }
+      .opt.ok {
+        border-color: var(--ok);
+        background: var(--tint);
+      }
+      .opt.bad {
+        border-color: var(--bad);
+      }
+      .fb {
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: var(--tint);
+        font-size: 14px;
+        margin-top: 8px;
+      }
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 15, 29, 0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 20;
+      }
+      .modal.on {
+        display: flex;
+      }
+      .box {
+        background: var(--surface);
+        border-radius: 22px;
+        padding: 28px;
+        width: 100%;
+        max-width: 380px;
+      }
+      input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          15px Inter,
+          sans-serif;
+        margin: 6px 0 12px;
+      }
+      label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .err {
+        color: var(--bad);
+        font-size: 13px;
+        min-height: 18px;
+      }
+      .link {
+        background: none;
+        border: 0;
+        color: var(--gold);
+        cursor: pointer;
+        font:
+          600 14px Inter,
+          sans-serif;
+        padding: 0;
+      }
+      .hide {
+        display: none !important;
+      }
+      @media (max-width: 760px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <nav>
+        <div class="logo"><i></i>Flashcard Coach</div>
+        <div id="navr"></div>
+      </nav>
+      <main id="app"></main>
+      <footer>
+        Prototype · Azure fundamentals study aid · Not affiliated with Microsoft
+      </footer>
+    </div>
+
+    <div class="modal" id="modal">
+      <div class="box">
+        <h2 id="mt" style="font-size: 26px">Welcome back</h2>
+        <p class="tag" style="margin: 6px 0 14px">
+          Prototype auth: accounts are stored only in this browser.
+        </p>
+        <label>Name</label><input id="fn" placeholder="Your name" class="nm" />
+        <label>Email</label
+        ><input id="fe" type="email" placeholder="you@example.com" />
+        <label>Password</label
+        ><input id="fp" type="password" placeholder="At least 6 characters" />
+        <div class="err" id="fer"></div>
+        <button class="btn gold" style="width: 100%" id="fgo">Continue</button>
+        <p style="text-align: center; margin: 14px 0 0">
+          <button class="link" id="fsw"></button> ·
+          <button class="link" id="fx">Close</button>
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const TOPICS = [
+        {
+          id: 1,
+          name: "Cloud concepts",
+          blurb: "Cloud models, service types and shared responsibility.",
+          cards: [
+            [
+              "Cloud computing",
+              "Delivery of computing services (servers, storage, networking, software) over the internet with pay-as-you-go pricing.",
+              "Like the electricity grid: you don’t build a power plant at home, you plug in and pay for the units you use.",
+            ],
+            [
+              "IaaS, PaaS, SaaS",
+              "Three service models. IaaS rents raw infrastructure, PaaS adds a managed platform, SaaS delivers finished software.",
+              "Pizza night: IaaS is buying ingredients, PaaS is a take-and-bake pizza, SaaS is dining out where everything is done for you.",
+            ],
+            [
+              "Elasticity",
+              "Resources scale up or down automatically to match demand, so you only pay for what you need.",
+              "A hotel that opens extra floors for a festival weekend and closes them on quiet Mondays.",
+            ],
+            [
+              "Shared responsibility",
+              "The provider secures the cloud itself; the customer secures what they put in it. The split shifts by service model.",
+              "Renting an apartment: the landlord maintains the building and locks the main door, but you lock your own flat.",
+            ],
+          ],
+        },
+        {
+          id: 2,
+          name: "Azure architecture & resources",
+          blurb: "Regions, zones, subscriptions and resource groups.",
+          cards: [
+            [
+              "Regions & Availability Zones",
+              "A region is a geographic area with datacenters. Availability Zones are separate datacenters inside a region with independent power, cooling and network.",
+              "A bank with branches in different cities (regions), each with several separate buildings with their own generators (zones).",
+            ],
+            [
+              "Resource group",
+              "A logical container that holds related Azure resources so you can deploy, manage and delete them together.",
+              "A labelled moving box: everything for the kitchen goes in one box and moves, or gets thrown away, together.",
+            ],
+            [
+              "Subscriptions & management groups",
+              "A subscription is a billing and access boundary. Management groups organise many subscriptions and apply policy to all of them.",
+              "A phone plan per department (subscription), with head office setting the rules for every plan (management group).",
+            ],
+            [
+              "Azure Resource Manager",
+              "The deployment and management layer: every request to create, update or delete a resource passes through it.",
+              "The building manager who checks every request, who’s allowed in, and what gets changed in the building.",
+            ],
+          ],
+        },
+        {
+          id: 3,
+          name: "Azure storage",
+          blurb: "Blobs, files, tiers and redundancy.",
+          cards: [
+            [
+              "Blob storage",
+              "Object storage for unstructured data such as images, video, backups and logs.",
+              "A giant warehouse where you drop labelled boxes of any shape and fetch them by label.",
+            ],
+            [
+              "Storage redundancy (LRS, ZRS, GRS)",
+              "Controls how many copies of data exist and where: within one datacenter, across zones, or across regions.",
+              "Photocopying an important document: keep copies in one drawer (LRS), in different rooms (ZRS), or in another city (GRS).",
+            ],
+            [
+              "Access tiers",
+              "Hot, Cool and Archive trade storage cost against access cost and speed, so rarely used data costs less.",
+              "Kitchen counter (hot) for daily items, pantry (cool) for occasional ones, attic (archive) for things you rarely need.",
+            ],
+            [
+              "Azure Files",
+              "Fully managed file shares accessible over SMB or NFS from cloud and on-premises machines.",
+              "The shared office filing cabinet that everyone on the team can open from their own desk.",
+            ],
+          ],
+        },
+        {
+          id: 4,
+          name: "Cost management & monitoring",
+          blurb: "Estimate, control and observe your Azure spend.",
+          cards: [
+            [
+              "Pricing Calculator",
+              "Estimates the cost of Azure services before you deploy them, based on region, size and usage.",
+              "Filling a shopping cart and checking the total before you go to the till.",
+            ],
+            [
+              "Cost Management + budgets",
+              "Tracks spending, analyses it by resource or tag, and sends alerts when budgets are approached.",
+              "A bank statement with a spending limit that texts you when you’ve used 80% of it.",
+            ],
+            [
+              "Azure Monitor",
+              "Collects and analyses metrics and logs from resources to understand performance and health, and to trigger alerts.",
+              "A car dashboard: speed, fuel and warning lights tell you what’s happening before the engine fails.",
+            ],
+            [
+              "Azure Advisor",
+              "Gives personalised recommendations on reliability, security, performance, cost and operational excellence.",
+              "A personal consultant who walks through your house and says where you’re wasting energy or leaving a door unlocked.",
+            ],
+          ],
+        },
+      ];
+      const QS = {
+        1: [
+          [
+            "Which service model gives you the most control over the operating system?",
+            ["SaaS", "PaaS", "IaaS"],
+            2,
+            "IaaS rents raw infrastructure, so you manage the OS and above.",
+          ],
+          [
+            "Cloud scaling up and down automatically with demand is called…",
+            ["Elasticity", "Redundancy", "Tiering"],
+            0,
+            "Elasticity matches resources to demand and cost.",
+          ],
+        ],
+        2: [
+          [
+            "Which Azure construct is separate datacenters with independent power inside one region?",
+            ["Resource group", "Availability Zone", "Subscription"],
+            1,
+            "Availability Zones protect against datacenter-level failure.",
+          ],
+          [
+            "What do you use to group resources that share a lifecycle?",
+            ["Resource group", "Region", "Blob container"],
+            0,
+            "Resource groups let you deploy and delete related resources together.",
+          ],
+        ],
+        3: [
+          [
+            "Which tier is cheapest to store but slowest to retrieve?",
+            ["Hot", "Cool", "Archive"],
+            2,
+            "Archive is for rarely accessed data and has retrieval delay.",
+          ],
+          [
+            "Which service suits images, videos and backups?",
+            ["Blob storage", "Azure Files", "Queue"],
+            0,
+            "Blob storage is Azure’s object store for unstructured data.",
+          ],
+        ],
+        4: [
+          [
+            "Which tool estimates cost before you deploy?",
+            ["Azure Monitor", "Pricing Calculator", "Azure Advisor"],
+            1,
+            "The Pricing Calculator builds an estimate from your planned usage.",
+          ],
+          [
+            "Which service gives metrics, logs and alerts for resources?",
+            ["Azure Monitor", "Cost Management", "Resource Manager"],
+            0,
+            "Azure Monitor collects telemetry and powers alerting.",
+          ],
+        ],
+      };
+
+      const $ = (s) => document.querySelector(s),
+        app = $("#app");
+      const ld = (k, d) => {
+        try {
+          return JSON.parse(localStorage.getItem(k)) || d;
+        } catch (e) {
+          return d;
+        }
+      };
+      const sv = (k, v) => {
+        try {
+          localStorage.setItem(k, JSON.stringify(v));
+        } catch (e) {}
+      };
+      let users = ld("fc_users", {}),
+        sess = ld("fc_sess", null),
+        mode = "in",
+        mem = {};
+      const P = () => {
+        if (!sess) return { known: {}, quiz: {} };
+        const u = users[sess] || mem[sess];
+        return u.p || (u.p = { known: {}, quiz: {} });
+      };
+      const savePrg = () => {
+        if (users[sess]) sv("fc_users", users);
+      };
+      const pct = (t) => {
+        const k = P().known;
+        return Math.round(
+          (100 * t.cards.filter((_, i) => k[t.id + "-" + i]).length) /
+            t.cards.length,
+        );
+      };
+
+      function nav() {
+        const u = sess && (users[sess] || mem[sess]);
+        $("#navr").innerHTML = u
+          ? `<span class="tag" style="margin-right:12px">Hi, ${u.name}</span><button class="btn ghost" onclick="out()">Sign out</button>`
+          : `<button class="btn ghost" onclick="openM('in')">Sign in</button>`;
+      }
+      function out() {
+        sess = null;
+        sv("fc_sess", null);
+        home();
+      }
+      function openM(m) {
+        mode = m;
+        $("#modal").classList.add("on");
+        $("#mt").textContent =
+          m === "in" ? "Welcome back" : "Create your account";
+        $(".nm").parentNode && 0;
+        $("#fn").previousElementSibling.classList.toggle("hide", m === "in");
+        $("#fn").classList.toggle("hide", m === "in");
+        $("#fsw").textContent =
+          m === "in" ? "Create an account" : "I have an account";
+        $("#fer").textContent = "";
+      }
+      $("#fx").onclick = () => $("#modal").classList.remove("on");
+      $("#fsw").onclick = () => openM(mode === "in" ? "up" : "in");
+      $("#fgo").onclick = () => {
+        const e = $("#fe").value.trim().toLowerCase(),
+          p = $("#fp").value,
+          n = $("#fn").value.trim(),
+          er = $("#fer");
+        if (!/^\S+@\S+\.\S+$/.test(e))
+          return (er.textContent = "Enter a valid email.");
+        if (p.length < 6)
+          return (er.textContent = "Password needs at least 6 characters.");
+        const tok = btoa(unescape(encodeURIComponent(p)));
+        if (mode === "up") {
+          if (!n) return (er.textContent = "Please add your name.");
+          if (users[e])
+            return (er.textContent = "That email is already registered.");
+          users[e] = { name: n, pw: tok, p: { known: {}, quiz: {} } };
+          sv("fc_users", users);
+        } else {
+          if (!users[e] || users[e].pw !== tok)
+            return (er.textContent = "Incorrect email or password.");
+        }
+        sess = e;
+        sv("fc_sess", e);
+        $("#modal").classList.remove("on");
+        dash();
+      };
+
+      function home() {
+        nav();
+        app.innerHTML = `
+<div class="hero"><div><div class="eyebrow">Azure fundamentals · made memorable</div>
+<h1>Remember Azure the way you remember everyday life.</h1>
+<p>Every concept comes with a clear technical definition and a real-world analogy you can relate to, then a short quiz to lock it in.</p>
+<div class="row"><button class="btn gold" onclick="openM('up')">Start learning free</button><button class="btn ghost" onclick="openM('in')">Sign in</button></div></div>
+<div class="demo"><small>Availability Zone</small><h3>Several buildings, one bank</h3>
+<p><b>Technical:</b> Separate datacenters in a region with independent power, cooling and networking.</p>
+<p><b>Analogy:</b> Branch offices in one city, each with its own generator, so one blackout doesn’t close the bank.</p></div></div>
+<div class="stats"><div><b>4</b><span>Topics</span></div><div><b>16</b><span>Flashcards</span></div><div><b>8</b><span>Quiz questions</span></div></div>
+<section><div class="eyebrow">What you’ll cover</div><h2>Four topics, one steady path</h2>
+<div class="grid">${TOPICS.map((t) => `<div class="card"><div class="n">0${t.id}</div><h3>${t.name}</h3><p>${t.blurb}</p></div>`).join("")}</div></section>
+<section><div class="eyebrow">How it works</div><h2>Learn, flip, check</h2><div class="grid">
+<div class="card"><div class="n">Step 1</div><h3>Read the technical side</h3><p>A concise, exam-aligned definition.</p></div>
+<div class="card"><div class="n">Step 2</div><h3>Flip for the analogy</h3><p>A real-world picture that sticks.</p></div>
+<div class="card"><div class="n">Step 3</div><h3>Take the quiz</h3><p>Sign in and your progress is tracked.</p></div></div></section>
+<section><div class="cta"><h2>Ready to make Azure click?</h2><p>Create a free account to save your progress across topics.</p><button class="btn gold" onclick="openM('up')">Create account</button></div></section>`;
+      }
+
+      function dash() {
+        if (!sess) return home();
+        nav();
+        const done = (TOPICS.reduce((a, t) => a + pct(t), 0) / 4) | 0;
+        app.innerHTML = `<section style="padding-top:24px"><div class="eyebrow">Your dashboard</div><h2>Overall progress: ${done}%</h2>
+<div class="bar"><div style="width:${done}%"></div></div>
+<div class="grid">${TOPICS.map((t) => {
+          const q = P().quiz[t.id];
+          return `<div class="card"><div class="n">0${t.id}</div><h3>${t.name}</h3><p>${t.blurb}</p>
+<div class="bar"><div style="width:${pct(t)}%"></div></div><div class="tag">${pct(t)}% cards known · Quiz best: ${q == null ? "–" : q + "/" + QS[t.id].length}</div>
+<div class="acts"><button class="btn" onclick="study(${t.id},0)">Study</button><button class="btn ghost" onclick="quiz(${t.id},0,0)">Quiz</button></div></div>`;
+        }).join("")}</div></section>`;
+      }
+
+      function study(tid, i, back) {
+        const t = TOPICS[tid - 1],
+          c = t.cards[i],
+          key = tid + "-" + i,
+          k = !!P().known[key];
+        app.innerHTML = `<section style="padding-top:24px"><div class="top"><button class="link" onclick="dash()">← Dashboard</button><span class="tag">${t.name} · Card ${i + 1} of ${t.cards.length}</span></div>
+<div class="flip" onclick="study(${tid},${i},${!back})"><div class="face ${back ? "an" : ""}"><span class="lab">${back ? "Real-world analogy" : "Technical explanation"}</span>
+<h2>${c[0]}</h2><p style="font-size:18px">${back ? c[2] : c[1]}</p><p class="tag" style="${back ? "color:inherit;opacity:.7" : ""}">Tap card to flip</p></div></div>
+<div class="acts"><button class="btn ${k ? "gold" : ""}" onclick="mark('${key}',${tid},${i},${!!back})">${k ? "✓ Marked as known" : "Mark as known"}</button>
+${i > 0 ? `<button class="btn ghost" onclick="study(${tid},${i - 1})">Previous</button>` : ""}
+${i < t.cards.length - 1 ? `<button class="btn ghost" onclick="study(${tid},${i + 1})">Next</button>` : `<button class="btn ghost" onclick="quiz(${tid},0,0)">Take quiz</button>`}</div></section>`;
+      }
+      function mark(key, tid, i, b) {
+        const p = P();
+        p.known[key] = !p.known[key];
+        savePrg();
+        study(tid, i, b);
+      }
+
+      function quiz(tid, qi, score, pick) {
+        const t = TOPICS[tid - 1],
+          qs = QS[tid];
+        if (qi >= qs.length) {
+          const p = P();
+          p.quiz[tid] = Math.max(p.quiz[tid] || 0, score);
+          savePrg();
+          app.innerHTML = `<section style="padding-top:24px"><div class="card" style="text-align:center;padding:40px"><div class="eyebrow">${t.name}</div><h2>You scored ${score}/${qs.length}</h2><p class="tag" style="font-size:15px">${score === qs.length ? "Perfect. Your progress is saved." : "Review the cards and try again."}</p><div class="acts" style="justify-content:center"><button class="btn" onclick="dash()">Dashboard</button><button class="btn ghost" onclick="study(${tid},0)">Review cards</button></div></div></section>`;
+          return;
+        }
+        const q = qs[qi],
+          ans = pick !== undefined;
+        app.innerHTML = `<section style="padding-top:24px"><div class="top"><button class="link" onclick="dash()">← Dashboard</button><span class="tag">${t.name} · Question ${qi + 1} of ${qs.length}</span></div>
+<h2 style="margin:20px 0 8px;font-size:26px">${q[0]}</h2>
+${q[1].map((o, j) => `<button class="opt ${ans ? (j === q[2] ? "ok" : j === pick ? "bad" : "") : ""}" ${ans ? "disabled" : ""} onclick="quiz(${tid},${qi},${score},${j})">${o}</button>`).join("")}
+${ans ? `<div class="fb">${pick === q[2] ? "Correct. " : "Not quite. "}${q[3]}</div><div class="acts"><button class="btn gold" onclick="quiz(${tid},${qi + 1},${score + (pick === q[2] ? 1 : 0)})">${qi + 1 < qs.length ? "Next question" : "See results"}</button></div>` : ""}</section>`;
+      }
+
+      sess && users[sess] ? dash() : home();
+    </script>
+  </body>
+</html>
